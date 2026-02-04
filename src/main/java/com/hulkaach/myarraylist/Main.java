@@ -2,6 +2,7 @@ package com.hulkaach.myarraylist;
 
 public class Main {
     public static void main(String[] args) {
+        //idea can't connect git
         StringListImpl stringList = new StringListImpl(5);
         System.out.println("stringList = " + stringList);
         stringList.add("a");
