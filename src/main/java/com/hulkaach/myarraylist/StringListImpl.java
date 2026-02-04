@@ -180,6 +180,9 @@ public class StringListImpl implements StringList {
             throw new IllegalArgumentException();
         }
     }
+    private int getCapacity() {
+        return size;
+    }
 
     @Override
     public String toString() {

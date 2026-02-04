@@ -3,8 +3,7 @@ package com.hulkaach.myarraylist;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
-import java.util.List;
+import java.lang.reflect.Field;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -20,14 +19,6 @@ class StringListImplTest {
     @BeforeEach
     void setUp() {
         list = new StringListImpl(CAPACITY);
-    }
-
-    @Test
-    void getIndex() {
-        assertEquals(0, list.size());
-        list.add(ITEM1);
-        list.add(ITEM2);
-        assertEquals(2, list.size());
     }
 
     @Test
@@ -48,6 +39,27 @@ class StringListImplTest {
     void addItemInArrayWithIndex() {
         list.add(2, ITEM1);
         assertEquals(ITEM1, list.get(2));
+    }
+
+    @Test
+    void addShouldAddSizeWhenAlmostFull() throws NoSuchFieldException, IllegalAccessException {
+        assertEquals(0, list.size());
+        list.add(ITEM1);
+        list.add(ITEM1);
+        list.add(ITEM1);
+        list.add(ITEM1);
+        list.add(ITEM1);
+        list.add(ITEM1);
+        list.add(ITEM1);
+        list.add(ITEM1);
+        assertEquals(CAPACITY,getArrayCapacity(list));
+        list.add(ITEM1);
+        assertEquals(CAPACITY*2, getArrayCapacity(list));
+        for (int i = 0; i < 8; i++) {
+            list.add(ITEM1);
+        }
+        assertEquals(CAPACITY*4, getArrayCapacity(list));
+
     }
 
     @Test
@@ -214,9 +226,16 @@ class StringListImplTest {
         list.add(ITEM2);
         list.add(ITEM3);
         String[] array = list.toArray();
-        assertEquals(3,array.length);
-        assertEquals(list.get(0),array[0]);
-        assertEquals(list.get(1),array[1]);
-        assertEquals(list.get(2),array[2]);
+        assertEquals(3, array.length);
+        assertEquals(list.get(0), array[0]);
+        assertEquals(list.get(1), array[1]);
+        assertEquals(list.get(2), array[2]);
+    }
+
+    private int getArrayCapacity(StringListImpl list) throws NoSuchFieldException, IllegalAccessException {
+        Field arrayField = StringListImpl.class.getDeclaredField("array");
+        arrayField.setAccessible(true);
+        String[] array = (String[]) arrayField.get(list);
+        return array.length;
     }
 }
