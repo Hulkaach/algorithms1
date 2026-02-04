@@ -6,12 +6,16 @@ public class StringListImpl implements StringList {
     private final double MAX_CAPACITY = 0.8;
     private final int DEFAULT_SIZE = 10;
     private int size;
-    private String[] array;
+    private String[] storage;
     private int index;
+
+    public StringListImpl() {
+        storage = new String[DEFAULT_SIZE];
+    }
 
     public StringListImpl(int size) {
         this.size = size;
-        this.array = new String[size];
+        this.storage = new String[size];
         this.index = 0;
     }
 
@@ -21,12 +25,12 @@ public class StringListImpl implements StringList {
         if (index >= size * MAX_CAPACITY) {
             String[] newArray = new String[size * 2];
             for (int i = 0; i < this.index; i++) {
-                newArray[i] = array[i];
+                newArray[i] = storage[i];
             }
-            array = newArray;
+            storage = newArray;
             size = size * 2;
         }
-        array[index] = item;
+        storage[index] = item;
         index++;
         return item;
     }
@@ -40,7 +44,7 @@ public class StringListImpl implements StringList {
         if (index < (this.index)) {
             throw new IllegalArgumentException("This position at array already busy");
         }
-        array[index] = item;
+        storage[index] = item;
         this.index++;
         return item;
     }
@@ -51,18 +55,18 @@ public class StringListImpl implements StringList {
         if (index >= size || index < 0) {
             throw new ArrayIndexOutOfBoundsException();
         }
-        return array[index] = item;
+        return storage[index] = item;
     }
 
     @Override
     public String remove(String item) {
         isNotNull(item);
         for (int i = 0; i < this.index; i++) {
-            if (array[i].equals(item)) {
+            if (storage[i].equals(item)) {
                 for (int j = i; j < this.index - 1; j++) {
-                    array[j] = array[j + 1];
+                    storage[j] = storage[j + 1];
                 }
-                array[index - 1] = null;
+                storage[index - 1] = null;
                 index--;
                 return item;
             }
@@ -75,11 +79,11 @@ public class StringListImpl implements StringList {
         if (index >= this.index || index < 0) {
             throw new NotFoundAtArrayException("No element at index " + index);
         }
-        String removed = array[index];
+        String removed = storage[index];
         for (int i = index; i < this.index - 1; i++) {
-            array[i] = array[i + 1];
+            storage[i] = storage[i + 1];
         }
-        array[this.index - 1] = null;
+        storage[this.index - 1] = null;
         this.index--;
         return removed;
     }
@@ -89,7 +93,7 @@ public class StringListImpl implements StringList {
         isNotNull(item);
         boolean flag = false;
         for (int i = 0; i < this.index; i++) {
-            if (array[i].equals(item)) {
+            if (storage[i].equals(item)) {
                 flag = true;
                 break;
             }
@@ -101,7 +105,7 @@ public class StringListImpl implements StringList {
     public int indexOf(String item) {
         isNotNull(item);
         for (int i = 0; i < index; i++) {
-            if (array[i].equals(item)) {
+            if (storage[i].equals(item)) {
                 return i;
             }
         }
@@ -112,7 +116,7 @@ public class StringListImpl implements StringList {
     public int lastIndexOf(String item) {
         isNotNull(item);
         for (int i = index - 1; i >= 0; i--) {
-            if (array[i].equals(item)) {
+            if (storage[i].equals(item)) {
                 return i;
             }
         }
@@ -124,7 +128,7 @@ public class StringListImpl implements StringList {
         if (index < 0 || index >= this.index) {
             throw new NotFoundAtArrayException("No element at index " + index);
         } else {
-            return array[index];
+            return storage[index];
         }
     }
 
@@ -137,7 +141,7 @@ public class StringListImpl implements StringList {
             return false;
         }
         for (int i = 0; i < this.index - 1; i++) {
-            if (!array[i].equals(otherList.toArray()[i])) {
+            if (!storage[i].equals(otherList.toArray()[i])) {
                 return false;
             }
 
@@ -158,7 +162,7 @@ public class StringListImpl implements StringList {
     @Override
     public void clear() {
         for (int i = 0; i < index; i++) {
-            array[i] = null;
+            storage[i] = null;
         }
         index = 0;
     }
@@ -170,7 +174,7 @@ public class StringListImpl implements StringList {
         }
         String[] newArray = new String[this.index];
         for (int i = 0; i < index; i++) {
-            newArray[i] = this.array[i];
+            newArray[i] = this.storage[i];
         }
         return newArray;
     }
@@ -186,6 +190,6 @@ public class StringListImpl implements StringList {
 
     @Override
     public String toString() {
-        return Arrays.toString(array);
+        return Arrays.toString(storage);
     }
 }
