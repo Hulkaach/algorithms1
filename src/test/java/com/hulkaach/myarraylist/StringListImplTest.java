@@ -37,50 +37,27 @@ class StringListImplTest {
 
     @Test
     void addItemInArrayWithIndex() {
+        list.add(ITEM3);
+        list.add(ITEM3);
         list.add(2, ITEM1);
+        assertEquals(3, list.size());
         assertEquals(ITEM1, list.get(2));
     }
 
     @Test
-    void addShouldAddSizeWhenAlmostFull() throws NoSuchFieldException, IllegalAccessException {
-        assertEquals(0, list.size());
-        list.add(ITEM1);
-        list.add(ITEM1);
-        list.add(ITEM1);
-        list.add(ITEM1);
-        list.add(ITEM1);
-        list.add(ITEM1);
-        list.add(ITEM1);
-        list.add(ITEM1);
-        assertEquals(CAPACITY,getArrayCapacity(list));
-        list.add(ITEM1);
-        assertEquals(CAPACITY*2, getArrayCapacity(list));
-        for (int i = 0; i < 8; i++) {
-            list.add(ITEM1);
-        }
-        assertEquals(CAPACITY*4, getArrayCapacity(list));
-
+    void shouldExceptionWhenAddItemWithIndexInEmptyStorage() {
+        assertThrows(InvalidIndexException.class, () -> list.add(2, ITEM3));
     }
 
     @Test
     void shouldThrowIndexExceptionWhenIndexMoreOrEqualCapacity() {
-        assertThrows(IndexOutOfBoundsException.class, () -> list.add(CAPACITY, ITEM1));
-        assertThrows(IndexOutOfBoundsException.class, () -> list.add(CAPACITY + 1, ITEM1));
+        assertThrows(InvalidIndexException.class, () -> list.add(CAPACITY, ITEM1));
+        assertThrows(InvalidIndexException.class, () -> list.add(CAPACITY + 1, ITEM1));
     }
 
     @Test
     void shouldThrowIndexExceptionWhenIndexIsNegative() {
-        assertThrows(IndexOutOfBoundsException.class, () -> list.add(-2, ITEM1));
-    }
-
-    @Test
-    void shouldThrowExceptionThenIndexIsBusy() {
-        list.add(ITEM1);
-        list.add(ITEM2);
-        list.add(ITEM3);
-        list.add(ITEM4);
-        list.add(ITEM5);
-        assertThrows(IllegalArgumentException.class, () -> list.add(2, ITEM1));
+        assertThrows(InvalidIndexException.class, () -> list.add(-2, ITEM1));
     }
 
     @Test
@@ -112,7 +89,7 @@ class StringListImplTest {
         list.add(ITEM2);
         list.add(ITEM3);
         assertEquals(3, list.size());
-        assertThrows(NotFoundAtArrayException.class, () -> list.remove(ITEM5));
+        assertThrows(ElementNotFoundException.class, () -> list.remove(ITEM5));
     }
 
     @Test
@@ -132,7 +109,7 @@ class StringListImplTest {
         list.add(ITEM2);
         list.add(ITEM3);
         assertEquals(3, list.size());
-        assertThrows(NotFoundAtArrayException.class, () -> list.remove(3));
+        assertThrows(InvalidIndexException.class, () -> list.remove(3));
     }
 
     @Test
@@ -177,13 +154,12 @@ class StringListImplTest {
         list.add(ITEM2);
         list.add(ITEM2);
         list.add(ITEM2);
-        assertThrows(NotFoundAtArrayException.class, () -> list.get(5));
-        assertThrows(NotFoundAtArrayException.class, () -> list.get(-1));
+        assertThrows(ElementNotFoundException.class, () -> list.remove(ITEM3));
     }
 
     @Test
     void testEquals() {
-        StringListImpl otherList = new StringListImpl(3);
+        StringListImpl otherList = new StringListImpl(4);
         otherList.add(ITEM1);
         otherList.add(ITEM2);
         otherList.add(ITEM3);
