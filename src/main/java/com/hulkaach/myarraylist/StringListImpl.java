@@ -71,13 +71,13 @@ public class StringListImpl implements StringList {
                 return item;
             }
         }
-        throw new NotFoundAtArrayException("Not found item at array");
+        throw new ElementNotFoundException("Not found item at array");
     }
 
     @Override
     public String remove(int index) {
         if (index >= this.index || index < 0) {
-            throw new NotFoundAtArrayException("No element at index " + index);
+            throw new ElementNotFoundException("No element at index " + index);
         }
         String removed = storage[index];
         for (int i = index; i < this.index - 1; i++) {
@@ -126,7 +126,7 @@ public class StringListImpl implements StringList {
     @Override
     public String get(int index) {
         if (index < 0 || index >= this.index) {
-            throw new NotFoundAtArrayException("No element at index " + index);
+            throw new ElementNotFoundException("No element at index " + index);
         } else {
             return storage[index];
         }

@@ -112,7 +112,7 @@ class StringListImplTest {
         list.add(ITEM2);
         list.add(ITEM3);
         assertEquals(3, list.size());
-        assertThrows(NotFoundAtArrayException.class, () -> list.remove(ITEM5));
+        assertThrows(ElementNotFoundException.class, () -> list.remove(ITEM5));
     }
 
     @Test
@@ -132,7 +132,7 @@ class StringListImplTest {
         list.add(ITEM2);
         list.add(ITEM3);
         assertEquals(3, list.size());
-        assertThrows(NotFoundAtArrayException.class, () -> list.remove(3));
+        assertThrows(ElementNotFoundException.class, () -> list.remove(3));
     }
 
     @Test
@@ -177,8 +177,8 @@ class StringListImplTest {
         list.add(ITEM2);
         list.add(ITEM2);
         list.add(ITEM2);
-        assertThrows(NotFoundAtArrayException.class, () -> list.get(5));
-        assertThrows(NotFoundAtArrayException.class, () -> list.get(-1));
+        assertThrows(ElementNotFoundException.class, () -> list.get(5));
+        assertThrows(ElementNotFoundException.class, () -> list.get(-1));
     }
 
     @Test
